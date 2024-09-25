@@ -8,5 +8,6 @@ public class Message {
 
     public static class User {
         public static final String USER_DOES_NOT_EXITED = "User does not exist";
+        public static final String USER_ALREADY_EXISTED = "User already existed";
     }
 }

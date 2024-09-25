@@ -6,6 +6,7 @@ import com.dev.identity.dto.request.AuthenticationRequest;
 import com.dev.identity.dto.request.IntrospectRequest;
 import com.dev.identity.service.AuthenticationService;
 import com.nimbusds.jose.JOSEException;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -27,7 +28,7 @@ public class AuthenticationController {
     AuthenticationService authenticationService;
 
     @PostMapping("/token")
-    public ResponseEntity<?> authenticate(@RequestBody AuthenticationRequest request) {
+    public ResponseEntity<?> authenticate(@RequestBody @Valid AuthenticationRequest request) {
         DataResponse dataResponse = new DataResponse();
         dataResponse.setStatus(true);
         dataResponse.setResult(new ResultModel<>(null, authenticationService.authenticate(request)));
@@ -35,7 +36,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/introspect")
-    public ResponseEntity<?> introspect(@RequestBody IntrospectRequest request) throws ParseException, JOSEException {
+    public ResponseEntity<?> introspect(@RequestBody @Valid IntrospectRequest request) throws ParseException, JOSEException {
         DataResponse dataResponse = new DataResponse();
         dataResponse.setStatus(true);
         dataResponse.setResult(new ResultModel<>(null, authenticationService.introspect(request)));

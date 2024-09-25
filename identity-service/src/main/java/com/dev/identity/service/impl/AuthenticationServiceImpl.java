@@ -77,7 +77,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .issuer("admin")
                 .issueTime(new Date())
                 .expirationTime(new Date(
-                        Instant.now().plus(1, ChronoUnit.HOURS).toEpochMilli()
+                        Instant.now().plus(propertiesConfig.getExpirationTime(), ChronoUnit.HOURS).toEpochMilli()
                 ))
                 .build();
 

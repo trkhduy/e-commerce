@@ -1,5 +1,8 @@
 package com.dev.identity.service.impl;
 
+import com.dev.commons.Message;
+import com.dev.commons.exception.CustomException;
+import com.dev.commons.response.ErrorModel;
 import com.dev.identity.dto.request.UserRequest;
 import com.dev.identity.dto.response.UserResponse;
 import com.dev.identity.entity.User;
@@ -34,6 +37,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse createUser(UserRequest request) {
+        var userExist = userRepository.existsUserByUsername(request.getUsername());
+        if (userExist) {
+            log.error("User already existed");
+            throw new CustomException(new ErrorModel(400, Message.User.USER_ALREADY_EXISTED));
+        }
         User user = userMapper.toUser(request);
         log.info("Creating user ...");
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);

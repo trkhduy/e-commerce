@@ -9,4 +9,7 @@ import org.springframework.context.annotation.Configuration;
 public class PropertiesConfig {
     @Value("${token.secret.key}")
     private String secretKey;
+
+    @Value("${token.expiration.time}")
+    private Integer expirationTime;
 }

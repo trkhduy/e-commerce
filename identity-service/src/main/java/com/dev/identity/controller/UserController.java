@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/identity")
+@RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -40,15 +40,9 @@ public class UserController {
     @PostMapping("/create-user")
     public ResponseEntity<?> createUser(@RequestBody @Valid UserRequest request) {
         DataResponse dataResponse = new DataResponse();
-        try {
-            dataResponse.setStatus(true);
-            dataResponse.setResult(new ResultModel<>(null, userService.createUser(request)));
-            return ResponseEntity.ok(dataResponse);
-        }catch (Exception e) {
-            dataResponse.setStatus(false);
-            dataResponse.setResult(new ResultModel<>(null, "Cannot create user"));
-            return ResponseEntity.ok(dataResponse);
-        }
+        dataResponse.setStatus(true);
+        dataResponse.setResult(new ResultModel<>(null, userService.createUser(request)));
+        return ResponseEntity.ok(dataResponse);
     }
 
     @GetMapping("/{id}")
