@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -24,17 +25,12 @@ public class UserController {
 
     @GetMapping("/get-all")
     public ResponseEntity<?> getAllUser() {
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+
         DataResponse dataResponse = new DataResponse();
-        try {
-            dataResponse.setStatus(true);
-            dataResponse.setResult(new ResultModel<>(null, userService.getAllUser()));
-            return ResponseEntity.ok(dataResponse);
-        } catch (Exception e) {
-            log.info("Failed to get all users", e);
-            dataResponse.setStatus(false);
-            dataResponse.setResult(new ResultModel<>(null, e.getMessage()));
-            return ResponseEntity.ok(dataResponse);
-        }
+        dataResponse.setStatus(true);
+        dataResponse.setResult(new ResultModel<>(null, userService.getAllUser()));
+        return ResponseEntity.ok(dataResponse);
     }
 
     @PostMapping("/create-user")
