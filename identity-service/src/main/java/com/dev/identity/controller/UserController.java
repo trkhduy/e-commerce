@@ -11,10 +11,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/identity")
+@RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -24,31 +25,20 @@ public class UserController {
 
     @GetMapping("/get-all")
     public ResponseEntity<?> getAllUser() {
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+
         DataResponse dataResponse = new DataResponse();
-        try {
-            dataResponse.setStatus(true);
-            dataResponse.setResult(new ResultModel<>(null, userService.getAllUser()));
-            return ResponseEntity.ok(dataResponse);
-        } catch (Exception e) {
-            log.info("Failed to get all users", e);
-            dataResponse.setStatus(false);
-            dataResponse.setResult(new ResultModel<>(null, e.getMessage()));
-            return ResponseEntity.ok(dataResponse);
-        }
+        dataResponse.setStatus(true);
+        dataResponse.setResult(new ResultModel<>(null, userService.getAllUser()));
+        return ResponseEntity.ok(dataResponse);
     }
 
     @PostMapping("/create-user")
     public ResponseEntity<?> createUser(@RequestBody @Valid UserRequest request) {
         DataResponse dataResponse = new DataResponse();
-        try {
-            dataResponse.setStatus(true);
-            dataResponse.setResult(new ResultModel<>(null, userService.createUser(request)));
-            return ResponseEntity.ok(dataResponse);
-        }catch (Exception e) {
-            dataResponse.setStatus(false);
-            dataResponse.setResult(new ResultModel<>(null, "Cannot create user"));
-            return ResponseEntity.ok(dataResponse);
-        }
+        dataResponse.setStatus(true);
+        dataResponse.setResult(new ResultModel<>(null, userService.createUser(request)));
+        return ResponseEntity.ok(dataResponse);
     }
 
     @GetMapping("/{id}")
