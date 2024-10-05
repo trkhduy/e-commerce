@@ -6,6 +6,8 @@ import com.dev.commons.response.ErrorModel;
 import com.dev.commons.response.ResultModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -60,6 +62,36 @@ public class GlobalExceptionHandler {
                 .build();
 
         return new ResponseEntity<>(dataResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ResponseEntity<?> handleAccessDeniedException(AccessDeniedException ex) {
+        ErrorModel errorModel = new ErrorModel(403, ex.getMessage());
+
+        DataResponse dataResponse = DataResponse.builder()
+                .status(false)
+                .result(ResultModel.builder()
+                        .content(errorModel)
+                        .build())
+                .build();
+
+        return new ResponseEntity<>(dataResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ResponseEntity<?> handleAuthenticationException(AuthenticationException ex) {
+        ErrorModel errorModel = new ErrorModel(401, ex.getMessage());
+
+        DataResponse dataResponse = DataResponse.builder()
+                .status(false)
+                .result(ResultModel.builder()
+                        .content(errorModel)
+                        .build())
+                .build();
+
+        return new ResponseEntity<>(dataResponse, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(RuntimeException.class)
