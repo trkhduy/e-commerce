@@ -1,7 +1,6 @@
 package com.dev.identity.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -14,6 +13,9 @@ import lombok.experimental.FieldDefaults;
 @Entity
 public class Permission {
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    String id;
+    @Column(unique = true)
     String name;
     String description;
 }

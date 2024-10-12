@@ -5,6 +5,7 @@ import com.dev.commons.response.DataResponse;
 import com.dev.commons.response.ResultModel;
 import com.dev.identity.dto.request.RoleRequest;
 import com.dev.identity.service.RoleService;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -14,7 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/roles")
+@RequestMapping("/api/v1/roles")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
@@ -37,9 +38,17 @@ public class RoleController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{role}")
-    ResponseEntity<?> delete(@PathVariable String role) {
-        roleService.delete(role);
+    @PutMapping("/{id}")
+    ResponseEntity<?> update(@PathVariable String id, @RequestBody @Valid RoleRequest request) {
+        DataResponse response = new DataResponse();
+        response.setStatus(true);
+        response.setResult(new ResultModel<>(null, roleService.update(request, id)));
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    ResponseEntity<?> delete(@PathVariable String id) {
+        roleService.delete(id);
         DataResponse response = new DataResponse();
         response.setStatus(true);
         response.setResult(new ResultModel<>(null, Message.Permission.DELETE));

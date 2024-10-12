@@ -3,6 +3,7 @@ package com.dev.identity.service.impl;
 import com.dev.commons.Message;
 import com.dev.commons.exception.CustomException;
 import com.dev.commons.response.ErrorModel;
+import com.dev.constant.Constants;
 import com.dev.identity.configuration.PropertiesConfig;
 import com.dev.identity.dto.request.AuthenticationRequest;
 import com.dev.identity.dto.request.IntrospectRequest;
@@ -97,11 +98,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     private String buildScope(User user){
-        StringJoiner stringJoiner = new StringJoiner("");
+        StringJoiner stringJoiner = new StringJoiner(" ");
         if(!CollectionUtils.isEmpty(user.getRoles())){
             user.getRoles().forEach(role -> {
-//                stringJoiner.add("ROLE_" + role.getName());
-                stringJoiner.add(role.getName());
+                stringJoiner.add(Constants.Authentication.AUTHORIZATION_PREFIX + role.getName());
+//                stringJoiner.add(role.getName());
                 if (!CollectionUtils.isEmpty(role.getPermissions()))
                     role.getPermissions().forEach(permission -> stringJoiner.add(permission.getName()));
             });

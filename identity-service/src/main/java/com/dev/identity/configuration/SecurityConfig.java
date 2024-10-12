@@ -45,25 +45,14 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request ->
                         request
                                 .requestMatchers(HttpMethod.POST, AUTH_WHITELIST).permitAll()
-                                .requestMatchers(HttpMethod.GET, "/api/v1/users/get-all").hasRole("ADMIN")
-                                .anyRequest().permitAll());
+                                .anyRequest().authenticated());
 
         http.oauth2ResourceServer(oauth2 ->
                 oauth2.jwt(jwtConfigurer ->
-                        jwtConfigurer.decoder(jwtDecoder())
-                                .jwtAuthenticationConverter(jwtAuthenticationConverter()))
-        );
-
-        http.exceptionHandling(exceptionHandling ->
-                exceptionHandling
-                        .accessDeniedHandler((request, response, accessDeniedException) -> {
-                            log.error("Access Denied ...", accessDeniedException);
-                            throw accessDeniedException;
-                        })
-                        .authenticationEntryPoint((request, response, authException) -> {
-                            log.error("Unauthorized ...", authException);
-                            throw authException;
-                        })
+                                jwtConfigurer.decoder(jwtDecoder())
+                                        .jwtAuthenticationConverter(jwtAuthenticationConverter()))
+                        .authenticationEntryPoint(new JWTAuthenticationEntryPoint())
+                        .accessDeniedHandler(new JWTAccessDeniedHandler())
         );
 
         return http.build();
@@ -72,7 +61,7 @@ public class SecurityConfig {
     @Bean
     JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
-        jwtGrantedAuthoritiesConverter.setAuthorityPrefix(Constants.Authentication.AUTHORIZATION_PREFIX);
+        jwtGrantedAuthoritiesConverter.setAuthorityPrefix("");
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter);
         return jwtAuthenticationConverter;
