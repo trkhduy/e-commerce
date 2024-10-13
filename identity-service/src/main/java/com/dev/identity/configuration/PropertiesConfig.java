@@ -12,4 +12,7 @@ public class PropertiesConfig {
 
     @Value("${token.expiration.time}")
     private Integer expirationTime;
+
+    @Value("${token.refresh.expiration.time}")
+    private Integer refreshTokenTime;
 }

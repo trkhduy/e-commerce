@@ -6,6 +6,7 @@ import com.dev.commons.response.ResultModel;
 import com.dev.identity.dto.request.AuthenticationRequest;
 import com.dev.identity.dto.request.IntrospectRequest;
 import com.dev.identity.dto.request.LogoutRequest;
+import com.dev.identity.dto.request.RefreshRequest;
 import com.dev.identity.service.AuthenticationService;
 import com.nimbusds.jose.JOSEException;
 import jakarta.validation.Valid;
@@ -34,6 +35,14 @@ public class AuthenticationController {
         DataResponse dataResponse = new DataResponse();
         dataResponse.setStatus(true);
         dataResponse.setResult(new ResultModel<>(null, authenticationService.authenticate(request)));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
+    @PostMapping("/refreshToken")
+    public ResponseEntity<?> refreshToken(@RequestBody RefreshRequest request) throws ParseException, JOSEException {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setStatus(true);
+        dataResponse.setResult(new ResultModel<>(null, authenticationService.refreshToken(request)));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
