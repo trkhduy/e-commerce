@@ -4,6 +4,7 @@ public class Message {
 
     public static class Authentication {
         public static final String UNAUTHENTICATED = "Unauthenticated";
+        public static final String LOG_OUT = "Log out successfully";
     }
 
     public static class User {

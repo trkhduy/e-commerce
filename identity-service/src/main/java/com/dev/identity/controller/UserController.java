@@ -26,7 +26,7 @@ public class UserController {
     UserService userService;
 
 //    @PreAuthorize("hasRole('ADMIN')")
-    @PreAuthorize("hasAuthority('GET_ALL_USER')")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping()
     public ResponseEntity<?> getAllUser() {
         DataResponse dataResponse = new DataResponse();
