@@ -1,5 +1,6 @@
 package com.dev.identity.entity;
 
+import com.dev.identity.enumeration.AccountStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -23,7 +24,10 @@ public class User {
     String password;
     String firstName;
     String lastName;
+    String email;
     LocalDate dob;
+    @Enumerated(EnumType.STRING)
+    private AccountStatus status = AccountStatus.INACTIVE;
     @ManyToMany
     Set<Role> roles;
 }
