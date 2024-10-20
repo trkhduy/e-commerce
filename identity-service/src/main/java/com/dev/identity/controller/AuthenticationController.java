@@ -7,6 +7,7 @@ import com.dev.identity.dto.request.AuthenticationRequest;
 import com.dev.identity.dto.request.IntrospectRequest;
 import com.dev.identity.dto.request.LogoutRequest;
 import com.dev.identity.dto.request.RefreshRequest;
+import com.dev.identity.dto.response.IntrospectResponse;
 import com.dev.identity.service.AuthenticationService;
 import com.nimbusds.jose.JOSEException;
 import jakarta.validation.Valid;
@@ -15,10 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 
@@ -30,7 +28,7 @@ public class AuthenticationController {
 
     AuthenticationService authenticationService;
 
-    @PostMapping("/token")
+    @PostMapping(value = "/login")
     public ResponseEntity<?> authenticate(@RequestBody @Valid AuthenticationRequest request) {
         DataResponse dataResponse = new DataResponse();
         dataResponse.setStatus(true);
@@ -61,6 +59,18 @@ public class AuthenticationController {
         dataResponse.setStatus(true);
         dataResponse.setResult(new ResultModel<>(null, Message.Authentication.LOG_OUT));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/verifyAccount")
+    public String confirmEmail(@RequestParam("token") String token) throws ParseException, JOSEException {
+        IntrospectResponse introspect = authenticationService.introspect(
+                IntrospectRequest.builder()
+                        .token(token)
+                        .build());
+        if (introspect.isValid()) {
+            return "redirect:/verify_success.html";
+        }
+        return "redirect:/verify_failure.html";
     }
 
 

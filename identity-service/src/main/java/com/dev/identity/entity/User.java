@@ -1,11 +1,10 @@
 package com.dev.identity.entity;
 
-import com.dev.identity.enumeration.AccountStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -15,19 +14,17 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    String id;
+public class User extends BaseEntity {
     @Column(unique = true)
     String username;
     String password;
     String firstName;
     String lastName;
+    String phoneNumber;
     String email;
-    LocalDate dob;
-    @Enumerated(EnumType.STRING)
-    private AccountStatus status = AccountStatus.INACTIVE;
+    Boolean isActive;
     @ManyToMany
     Set<Role> roles;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<UserAddress> addresses;
 }

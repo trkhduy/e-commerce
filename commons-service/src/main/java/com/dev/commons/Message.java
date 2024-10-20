@@ -10,6 +10,7 @@ public class Message {
     public static class User {
         public static final String USER_DOES_NOT_EXITED = "User does not exist";
         public static final String USER_ALREADY_EXISTED = "User already existed";
+        public static final String EMAIL_ALREADY_EXISTED = "Email already existed";
         public static final String CREATE_FAILED = "Create User failed";
         public static final String UPDATE_FAILED = "Update User failed";
         public static final String DELETE = "Delete User Successful";
@@ -28,5 +29,14 @@ public class Message {
         public static final String PERMISSION_ALREADY_EXISTED = "Permission already exists";
         public static final String CREATE_FAILED = "Create Permission failed";
         public static final String UPDATE_FAILED = "Update Permission failed";
+    }
+
+    public static class Shop {
+        public static final String DOES_NOT_EXITED = "Shop does not exist";
+        public static final String ALREADY_EXISTED = "Shop already existed";
+        public static final String EMAIL_ALREADY_EXISTED = "Email already existed";
+        public static final String CREATE_FAILED = "Create Shop failed";
+        public static final String UPDATE_FAILED = "Update Shop failed";
+        public static final String DELETE = "Delete Shop Successful";
     }
 }

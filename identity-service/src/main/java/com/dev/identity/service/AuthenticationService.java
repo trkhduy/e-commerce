@@ -6,6 +6,7 @@ import com.dev.identity.dto.request.LogoutRequest;
 import com.dev.identity.dto.request.RefreshRequest;
 import com.dev.identity.dto.response.AuthenticationResponse;
 import com.dev.identity.dto.response.IntrospectResponse;
+import com.dev.identity.entity.User;
 import com.nimbusds.jose.JOSEException;
 
 import java.text.ParseException;
@@ -15,6 +16,8 @@ public interface AuthenticationService {
     AuthenticationResponse authenticate(AuthenticationRequest request);
 
     AuthenticationResponse refreshToken(RefreshRequest request) throws ParseException, JOSEException;
+
+    String generateVerifyMailToken(User user);
 
     IntrospectResponse introspect(IntrospectRequest request) throws JOSEException, ParseException;
 

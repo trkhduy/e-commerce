@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
-import java.time.LocalDate;
 import java.util.Set;
 
 @Getter
@@ -18,6 +17,8 @@ public class UserResponse {
     String username;
     String firstName;
     String lastName;
-    LocalDate dob;
+    String phoneNumber;
+    String email;
+    Boolean isActive;
     Set<RoleResponse> roles;
 }

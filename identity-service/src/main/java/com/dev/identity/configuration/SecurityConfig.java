@@ -28,8 +28,8 @@ public class SecurityConfig {
     CustomJWTDecoder customJWTDecoder;
 
     String[] AUTH_WHITELIST = {
-            "/api/v1/users/create-user",
-            "/api/v1/auth/token",
+            "/api/v1/users/register",
+            "/api/v1/auth/login",
             "/api/v1/auth/introspect",
             "/api/v1/auth/logout",
             "/api/v1/auth/refreshToken"

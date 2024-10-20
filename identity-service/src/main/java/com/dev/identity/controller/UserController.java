@@ -35,7 +35,7 @@ public class UserController {
         return ResponseEntity.ok(dataResponse);
     }
 
-    @PostMapping()
+    @PostMapping("/register")
     public ResponseEntity<?> createUser(@RequestBody @Valid UserCreationRequest request) {
         DataResponse dataResponse = new DataResponse();
         dataResponse.setStatus(true);

@@ -57,7 +57,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (!isPasswordMatch)
             throw new CustomException(new ErrorModel(401, Message.Authentication.UNAUTHENTICATED));
 
-        var token = generateToken(user);
+        var token = generateToken(user, false);
         return AuthenticationResponse.builder()
                 .id(user.getId())
                 .token(token)
@@ -84,11 +84,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .orElseThrow(() -> new CustomException(new ErrorModel(400, Message.User.USER_DOES_NOT_EXITED)));
 
         log.info("Creating new token ...");
-        var token = generateToken(user);
+        var token = generateToken(user, false);
         return AuthenticationResponse.builder()
                 .id(user.getId())
                 .token(token)
                 .build();
+    }
+
+    @Override
+    public String generateVerifyMailToken(User user) {
+        return generateToken(user, true);
     }
 
     @Override
@@ -144,14 +149,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return signedJWT;
     }
 
-    private String generateToken(User user) {
+    private String generateToken(User user, boolean isVerifyMail) {
         JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
         JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
                 .subject(user.getUsername())
                 .issuer("admin")
                 .issueTime(new Date())
                 .expirationTime(new Date(
-                        Instant.now().plus(propertiesConfig.getExpirationTime(), ChronoUnit.SECONDS).toEpochMilli()
+                        Instant.now().plus(isVerifyMail
+                                ? propertiesConfig.getVerifyMailTokenTime()
+                                : propertiesConfig.getExpirationTime(), ChronoUnit.SECONDS).toEpochMilli()
                 ))
                 .jwtID(UUID.randomUUID().toString())
                 .claim("scope", buildScope(user))

@@ -13,10 +13,7 @@ import java.util.Set;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-public class Role {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    String id;
+public class Role extends BaseEntity {
     @Column(unique = true)
     String name;
     String description;

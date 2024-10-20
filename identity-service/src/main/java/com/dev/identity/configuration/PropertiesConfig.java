@@ -13,6 +13,9 @@ public class PropertiesConfig {
     @Value("${token.expiration.time}")
     private Integer expirationTime;
 
+    @Value("${token.verify-mail.expiration.time}")
+    private Integer verifyMailTokenTime;
+
     @Value("${token.refresh.expiration.time}")
     private Integer refreshTokenTime;
 }
