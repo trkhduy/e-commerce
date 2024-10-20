@@ -1,21 +1,21 @@
 package com.dev.identity.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.Date;
+
+@Entity
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Entity
-public class Permission {
+public class InvalidatedToken {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     String id;
-    @Column(unique = true)
-    String name;
-    String description;
+    Date expiryTime;
 }

@@ -1,9 +1,12 @@
 package com.dev.identity.controller;
 
+import com.dev.commons.Message;
 import com.dev.commons.response.DataResponse;
 import com.dev.commons.response.ResultModel;
 import com.dev.identity.dto.request.AuthenticationRequest;
 import com.dev.identity.dto.request.IntrospectRequest;
+import com.dev.identity.dto.request.LogoutRequest;
+import com.dev.identity.dto.request.RefreshRequest;
 import com.dev.identity.service.AuthenticationService;
 import com.nimbusds.jose.JOSEException;
 import jakarta.validation.Valid;
@@ -35,11 +38,28 @@ public class AuthenticationController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
+    @PostMapping("/refreshToken")
+    public ResponseEntity<?> refreshToken(@RequestBody RefreshRequest request) throws ParseException, JOSEException {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setStatus(true);
+        dataResponse.setResult(new ResultModel<>(null, authenticationService.refreshToken(request)));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
     @PostMapping("/introspect")
     public ResponseEntity<?> introspect(@RequestBody @Valid IntrospectRequest request) throws ParseException, JOSEException {
         DataResponse dataResponse = new DataResponse();
         dataResponse.setStatus(true);
         dataResponse.setResult(new ResultModel<>(null, authenticationService.introspect(request)));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(@RequestBody LogoutRequest request) throws ParseException, JOSEException {
+        authenticationService.logout(request);
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setStatus(true);
+        dataResponse.setResult(new ResultModel<>(null, Message.Authentication.LOG_OUT));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 

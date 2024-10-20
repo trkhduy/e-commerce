@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserRequest {
+public class UserCreationRequest {
     @NotBlank(message = "Username is required")
     String username;
     @Size(min = 6, message = "Password must be at least 6 characters long")
