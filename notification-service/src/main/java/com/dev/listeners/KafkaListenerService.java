@@ -32,7 +32,7 @@ public class KafkaListenerService {
 
     @KafkaListener(topics = "${spring.kafka.topic.send.email}", containerFactory = "kafkaListenerContainerFactory")
     public void receiveMessageSendMessage(String message) {
-        log.info("Receiving message...");
+        log.info("Receiving message... {}", message);
         try {
             Map<EmailPropertiesEnum, String> valueEmailSendEnumStringMap = convertMessageToMap(message);
             emailService.sendEmail(valueEmailSendEnumStringMap);

@@ -43,8 +43,9 @@ public class SendEmailUtil {
 
 
     public void sendVerifyEmail(User user) throws JsonProcessingException {
-        Map<EmailPropertiesEnum, String> valueEmailSendEnumStringMap = handleInformationEmail(user, EmailTypeEnum.VERIFY_EMAIL);
-        kafkaService.sendMessage(topicMessageEmail, valueEmailSendEnumStringMap);
+//        Map<EmailPropertiesEnum, String> valueEmailSendEnumStringMap = handleInformationEmail(user, EmailTypeEnum.VERIFY_EMAIL);
+//        kafkaService.sendMessage(topicMessageEmail, valueEmailSendEnumStringMap);
+        kafkaService.sendMessage(topicMessageEmail, "hello");
     }
 
     private Map<EmailPropertiesEnum, String> handleInformationEmail(User user, EmailTypeEnum emailTypeEnum) {

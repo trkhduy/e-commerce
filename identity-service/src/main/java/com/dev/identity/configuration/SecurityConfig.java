@@ -32,7 +32,8 @@ public class SecurityConfig {
             "/api/v1/auth/login",
             "/api/v1/auth/introspect",
             "/api/v1/auth/logout",
-            "/api/v1/auth/refreshToken"
+            "/api/v1/auth/refreshToken",
+            "/test/sendEmail"
     };
 
     @Bean

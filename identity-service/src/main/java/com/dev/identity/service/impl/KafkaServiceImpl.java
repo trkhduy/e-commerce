@@ -20,15 +20,17 @@ public class KafkaServiceImpl implements KafkaService {
     ObjectMapper objectMapper;
 
     @Override
-    public void sendMessage(String topic, Object object) {
-        if (object != null) {
-            try {
-                String message = objectMapper.writeValueAsString(object);
-                log.info("Sending..............to {}", topic);
-                kafkaTemplate.send(topic, message);
-            } catch (JsonProcessingException e) {
-                log.error("Error converting object to JSON: {}", e.getMessage());
-            }
-        }
+    public void sendMessage(String topic, String message) {
+//        if (object != null) {
+//            try {
+//                String message = objectMapper.writeValueAsString(object);
+//                log.info("Sending..............to {}", topic);
+//                kafkaTemplate.send(topic, message);
+//            } catch (JsonProcessingException e) {
+//                log.error("Error converting object to JSON: {}", e.getMessage());
+//            }
+//        }
+        kafkaTemplate.send(topic, message);
+        System.out.println("Message sent to topic: " + topic);
     }
 }
