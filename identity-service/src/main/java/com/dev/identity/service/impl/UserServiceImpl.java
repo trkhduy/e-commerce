@@ -59,10 +59,10 @@ public class UserServiceImpl implements UserService {
             log.error(Message.User.USER_ALREADY_EXISTED);
             throw new CustomException(new ErrorModel(400, Message.User.USER_ALREADY_EXISTED));
         }
-//        if (emailExist) {
-//            log.error(Message.User.EMAIL_ALREADY_EXISTED);
-//            throw new CustomException(new ErrorModel(400, Message.User.EMAIL_ALREADY_EXISTED));
-//        }
+        if (emailExist) {
+            log.error(Message.User.EMAIL_ALREADY_EXISTED);
+            throw new CustomException(new ErrorModel(400, Message.User.EMAIL_ALREADY_EXISTED));
+        }
         if (request.getShop() != null) {
             try {
                 var shop = request.getShop();
@@ -150,6 +150,21 @@ public class UserServiceImpl implements UserService {
         User userInfo = userRepository.findByUsername(username)
                 .orElseThrow(() -> new CustomException(new ErrorModel(400, Message.User.USER_DOES_NOT_EXITED)));
         return userMapper.toUserResponse(userInfo);
+    }
+
+    @Override
+    public Boolean updateUserStatus(String id) {
+        try {
+            User user = findById(id);
+            user.setIsActive(true);
+
+            log.info("Updating user status ...");
+            userRepository.save(user);
+            return true;
+        } catch (Exception e) {
+            log.error("Error updating user status ...");
+            return false;
+        }
     }
 
     @Override

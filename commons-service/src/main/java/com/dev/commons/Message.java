@@ -14,6 +14,7 @@ public class Message {
         public static final String CREATE_FAILED = "Create User failed";
         public static final String UPDATE_FAILED = "Update User failed";
         public static final String DELETE = "Delete User Successful";
+        public static final String INACTIVE = "Account is not activated yet";
     }
 
     public static class Role{

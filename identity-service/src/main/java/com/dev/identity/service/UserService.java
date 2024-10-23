@@ -18,5 +18,7 @@ public interface UserService {
 
     UserResponse getMyInfo();
 
+    Boolean updateUserStatus(String id);
+
     void deleteUser(String id);
 }

@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import java.text.ParseException;
 
 @RestController
-@RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AuthenticationController {
@@ -59,18 +58,6 @@ public class AuthenticationController {
         dataResponse.setStatus(true);
         dataResponse.setResult(new ResultModel<>(null, Message.Authentication.LOG_OUT));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
-    }
-
-    @GetMapping("/verifyAccount")
-    public String confirmEmail(@RequestParam("token") String token) throws ParseException, JOSEException {
-        IntrospectResponse introspect = authenticationService.introspect(
-                IntrospectRequest.builder()
-                        .token(token)
-                        .build());
-        if (introspect.isValid()) {
-            return "redirect:/verify_success.html";
-        }
-        return "redirect:/verify_failure.html";
     }
 
 
