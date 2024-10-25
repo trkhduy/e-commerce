@@ -7,6 +7,7 @@ public class Constants {
         public static final String ADMIN_ROLE = "ADMIN";
         public static final String SHOP_ROLE = "SHOP";
         public static final String AUTHORIZATION_PREFIX = "ROLE_";
+        public static final String BEARER_TOKEN_PREFIX = "Bearer ";
     }
 
 }
