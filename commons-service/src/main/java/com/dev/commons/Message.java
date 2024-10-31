@@ -13,6 +13,8 @@ public class Message {
         public static final String EMAIL_ALREADY_EXISTED = "Email already existed";
         public static final String CREATE_FAILED = "Create User failed";
         public static final String UPDATE_FAILED = "Update User failed";
+        public static final String UPDATE_STATUS_FAILED = "Update Status failed";
+        public static final String UPDATE_STATUS = "Update Status successfully";
         public static final String DELETE = "Delete User Successful";
         public static final String INACTIVE = "Account is not activated yet";
     }
@@ -39,5 +41,16 @@ public class Message {
         public static final String CREATE_FAILED = "Create Shop failed";
         public static final String UPDATE_FAILED = "Update Shop failed";
         public static final String DELETE = "Delete Shop Successful";
+
+    }
+
+    public static class Order {
+        public static final String DOES_NOT_EXITED = "Order does not exist";
+        public static final String ALREADY_EXISTED = "Order already existed";
+        public static final String CREATE_FAILED = "Create Order failed";
+        public static final String CREATE_SUCCESS = "Create Order successfully";
+        public static final String UPDATE_FAILED = "Update Order failed";
+        public static final String DELETE = "Delete Order Successful";
+
     }
 }

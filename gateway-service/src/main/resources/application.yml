@@ -1,6 +1,11 @@
 server:
   port: 8089
 
+app:
+  api-prefix: /api/v1
+
+config:
+  cors: http://localhost:3000,http://localhost:4567
 
 spring:
   application:
@@ -11,5 +16,8 @@ spring:
         - id: identity-service
           uri: http://localhost:8082
           predicates:
-            - Path=/api/v1/identity/**
-
+            - Path=${app.api-prefix}/identity/**
+        - id: product-service
+          uri: http://192.168.0.107:8888
+          predicates:
+            - Path=${app.api-prefix}/**

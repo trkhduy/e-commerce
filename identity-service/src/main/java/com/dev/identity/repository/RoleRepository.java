@@ -5,11 +5,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RoleRepository extends JpaRepository<Role, String> {
+public interface RoleRepository extends JpaRepository<Role, Integer> {
 
     Role findByName(String name);
 
     boolean existsByName(String name);
 
-    boolean existsByNameAndIdNot(String name, String id);
+    boolean existsByNameAndIdNot(String name, Integer id);
 }

@@ -58,7 +58,7 @@ public class SendEmailUtil {
         String linkVerifyToken = typeToken.equals(TokenTypeEnum.VERIFY_TOKEN)
                 ? pathVerifyEmail
                 : pathForgotPassword;
-        linkVerifyToken = linkVerifyToken.replace("{{userId}}", user.getId());
+        linkVerifyToken = linkVerifyToken.replace("{{userId}}", user.getId().toString());
         linkVerifyToken = linkVerifyToken.replace("{{token}}", authenticationService.generateVerifyMailToken(user));
         EmailTemplate emailTemplateEntity = emailTemplateService.getByType(emailTypeEnum.toString());
         String subject = emailTemplateEntity.getSubject();

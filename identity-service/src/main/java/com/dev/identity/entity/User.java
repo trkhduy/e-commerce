@@ -27,4 +27,6 @@ public class User extends BaseEntity {
     Set<Role> roles;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     List<UserAddress> addresses;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<Order> orders;
 }

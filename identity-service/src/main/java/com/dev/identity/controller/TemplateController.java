@@ -23,7 +23,7 @@ public class TemplateController {
     private final UserService userService;
 
     @GetMapping()
-    public String verifyValue(@RequestParam String token, @RequestParam String userId) throws ParseException, JOSEException {
+    public String verifyValue(@RequestParam String token, @RequestParam Integer userId) throws ParseException, JOSEException {
 
         IntrospectResponse response = authenticationService.introspect(IntrospectRequest.builder().token(token).build());
         if (response.isValid()) {

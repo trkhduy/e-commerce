@@ -2,29 +2,29 @@ package com.dev.identity.entity;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.Date;
 import java.util.List;
 
-@Entity
+@Entity(name = "Orders")
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Shop extends BaseEntity {
-    String shopName;
-    String contactMail;
-    String contactPhone;
-    Boolean isActive;
-    @OneToOne
+public class Order extends BaseEntity {
+
+    Date orderDate;
+    String status;
+    Double totalAmount;
+    @ManyToOne
     User user;
-    @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     List<OrderItem> orderItems;
-    @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<Payment> payments;
+
 }

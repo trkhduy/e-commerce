@@ -43,7 +43,7 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
-    public void delete(String id) {
+    public void delete(Integer id) {
         permissionRepository.deleteById(id);
     }
 }

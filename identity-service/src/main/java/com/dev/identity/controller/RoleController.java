@@ -39,7 +39,7 @@ public class RoleController {
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<?> update(@PathVariable String id, @RequestBody @Valid RoleRequest request) {
+    ResponseEntity<?> update(@PathVariable Integer id, @RequestBody @Valid RoleRequest request) {
         DataResponse response = new DataResponse();
         response.setStatus(true);
         response.setResult(new ResultModel<>(null, roleService.update(request, id)));
@@ -47,7 +47,7 @@ public class RoleController {
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<?> delete(@PathVariable String id) {
+    ResponseEntity<?> delete(@PathVariable Integer id) {
         roleService.delete(id);
         DataResponse response = new DataResponse();
         response.setStatus(true);

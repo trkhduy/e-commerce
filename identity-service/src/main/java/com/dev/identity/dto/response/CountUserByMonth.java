@@ -6,9 +6,10 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class PermissionResponse {
-    Integer id;
-    String name;
-    String description;
+public class CountUserByMonth {
+    Integer month;
+    Integer count;
 }

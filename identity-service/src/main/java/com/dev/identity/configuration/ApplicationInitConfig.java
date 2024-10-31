@@ -49,6 +49,11 @@ public class ApplicationInitConfig {
                         .description("User role")
                         .build());
 
+                roleRepository.save(Role.builder()
+                        .name(Constants.Authentication.SHOP_ROLE)
+                        .description("Shop role")
+                        .build());
+
                 Role adminRole = roleRepository.save(Role.builder()
                         .name(Constants.Authentication.ADMIN_ROLE)
                         .description("Admin role")

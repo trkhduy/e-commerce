@@ -9,6 +9,10 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @NoArgsConstructor
 @AllArgsConstructor
-public class LogoutRequest {
-    String token;
+public class OrderItemRequest {
+
+    Integer productId;
+    Integer couponId;
+    Integer shopId;
+    Integer quantity;
 }

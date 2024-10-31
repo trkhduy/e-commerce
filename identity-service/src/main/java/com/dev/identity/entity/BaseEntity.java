@@ -1,16 +1,14 @@
 package com.dev.identity.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.Date;
 
 @Getter
+@Setter
 @MappedSuperclass
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,8 +16,8 @@ import java.util.Date;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Sử dụng tự động tăng
+    Integer id;
     Date createdAt;
     Date updatedAt;
 }

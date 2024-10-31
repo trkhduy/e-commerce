@@ -43,7 +43,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable String id, @RequestBody @Valid UserUpdateRequest request) {
+    public ResponseEntity<?> updateUser(@PathVariable Integer id, @RequestBody @Valid UserUpdateRequest request) {
         DataResponse dataResponse = new DataResponse();
         dataResponse.setStatus(true);
         dataResponse.setResult(new ResultModel<>(null, userService.updateUser(request, id)));
@@ -52,7 +52,7 @@ public class UserController {
 
     @PostAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
-    public ResponseEntity<?> getUserById(@PathVariable String id) {
+    public ResponseEntity<?> getUserById(@PathVariable Integer id) {
         DataResponse dataResponse = new DataResponse();
         dataResponse.setStatus(true);
         dataResponse.setResult(new ResultModel<>(null, userService.getUserById(id)));
@@ -68,11 +68,19 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteUser(@PathVariable String id) {
+    public ResponseEntity<?> deleteUser(@PathVariable Integer id) {
         userService.deleteUser(id);
         DataResponse dataResponse = new DataResponse();
         dataResponse.setStatus(true);
         dataResponse.setResult(new ResultModel<>(null, Message.User.DELETE));
+        return ResponseEntity.ok(dataResponse);
+    }
+
+    @GetMapping("/thong-ke")
+    public ResponseEntity<?> thongKeUser() {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setStatus(true);
+        dataResponse.setResult(new ResultModel<>(null, userService.countUserRegistryByMonth()));
         return ResponseEntity.ok(dataResponse);
     }
 }

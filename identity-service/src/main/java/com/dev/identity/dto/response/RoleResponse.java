@@ -10,7 +10,7 @@ import java.util.Set;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RoleResponse {
-    String id;
+    Integer id;
     String name;
     String description;
     Set<PermissionResponse> permissions;

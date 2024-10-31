@@ -38,7 +38,7 @@ public class PermissionController {
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<?> delete(@PathVariable String id) {
+    ResponseEntity<?> delete(@PathVariable Integer id) {
         permissionService.delete(id);
         DataResponse response = new DataResponse();
         response.setStatus(true);

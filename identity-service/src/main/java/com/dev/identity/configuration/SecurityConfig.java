@@ -27,12 +27,12 @@ public class SecurityConfig {
     CustomJWTDecoder customJWTDecoder;
 
     String[] AUTH_WHITELIST = {
-            "/api/v1/users/register",
-            "/api/v1/auth/login",
-            "/api/v1/auth/introspect",
-            "/api/v1/auth/logout",
-            "/api/v1/auth/refreshToken",
-            "/api/v1/auth/verifyAccount"
+            "/users/register",
+            "/login",
+            "/introspect",
+            "/logout",
+            "/refreshToken",
+            "/verifyAccount"
     };
 
     @Bean
@@ -41,7 +41,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request ->
                         request
                                 .requestMatchers(AUTH_WHITELIST).permitAll()
-                                .anyRequest().permitAll());
+                                .anyRequest().permitAll())
+                .logout(AbstractHttpConfigurer::disable);
 
         http.oauth2ResourceServer(oauth2 ->
                 oauth2.jwt(jwtConfigurer ->

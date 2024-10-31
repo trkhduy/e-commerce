@@ -4,8 +4,10 @@ import com.dev.commons.Message;
 import com.dev.commons.exception.CustomException;
 import com.dev.commons.response.ErrorModel;
 import com.dev.constant.Constants;
+import com.dev.identity.dto.request.ShopActiveRequest;
 import com.dev.identity.dto.request.UserCreationRequest;
 import com.dev.identity.dto.request.UserUpdateRequest;
+import com.dev.identity.dto.response.CountUserByMonth;
 import com.dev.identity.dto.response.UserResponse;
 import com.dev.identity.entity.Role;
 import com.dev.identity.entity.Shop;
@@ -16,6 +18,7 @@ import com.dev.identity.repository.RoleRepository;
 import com.dev.identity.repository.ShopRepository;
 import com.dev.identity.repository.UserRepository;
 import com.dev.identity.service.UserService;
+import com.dev.identity.util.DateUtil;
 import com.dev.identity.util.SendEmailUtil;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -26,9 +29,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.ZoneId;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -84,6 +88,7 @@ public class UserServiceImpl implements UserService {
                 Set<Role> roles = new HashSet<>();
                 roles.add(roleRepository.findByName(Constants.Authentication.SHOP_ROLE));
                 user.setRoles(roles);
+                user.setCreatedAt(new Date());
                 log.info("Creating user ...");
                 userRepository.save(user);
 
@@ -91,6 +96,7 @@ public class UserServiceImpl implements UserService {
                 Shop shopEntity = shopMapper.toShop(shop);
                 shopEntity.setIsActive(true);
                 shopEntity.setUser(user);
+                shopEntity.setCreatedAt(new Date());
                 shopRepository.save(shopEntity);
                 log.info("Send verify email ...");
                 sendEmailUtil.sendVerifyEmail(user);
@@ -107,6 +113,7 @@ public class UserServiceImpl implements UserService {
                 Set<Role> roles = new HashSet<>();
                 roles.add(roleRepository.findByName(Constants.Authentication.USER_ROLE));
                 user.setRoles(roles);
+                user.setCreatedAt(new Date());
                 log.info("Creating user ...");
                 userRepository.save(user);
                 log.info("Send verify email ...");
@@ -121,13 +128,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponse updateUser(UserUpdateRequest request, String id) {
+    public UserResponse updateUser(UserUpdateRequest request, Integer id) {
         User user = findById(id);
         try {
             userMapper.updateUser(user, request);
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             var roles = roleRepository.findAllById(request.getRoles());
             user.setRoles(new HashSet<>(roles));
+            user.setUpdatedAt(new Date());
             log.info("Updating user ...");
             return userMapper.toUserResponse(userRepository.save(user));
         } catch (Exception e) {
@@ -137,7 +145,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponse getUserById(String id) {
+    public UserResponse getUserById(Integer id) {
         User user = findById(id);
         return userMapper.toUserResponse(user);
     }
@@ -153,7 +161,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Boolean updateUserStatus(String id) {
+    public Boolean updateUserStatus(Integer id) {
         try {
             User user = findById(id);
             user.setIsActive(true);
@@ -168,12 +176,60 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(String id) {
+    public Boolean updateStatus(ShopActiveRequest request) {
+
+        try {
+            Role role = roleRepository.findById(request.getRoleId()).orElseThrow(() ->
+                    new CustomException(new ErrorModel(400, Message.Role.ROLE_DOES_NOT_EXITED))
+            );
+
+            if (role == null || Constants.Authentication.USER_ROLE.equals(role.getName()) || role.getName() == null) {
+                User user = findById(request.getId());
+                user.setIsActive(request.getIsActive());
+                userRepository.save(user);
+            } else if (Constants.Authentication.SHOP_ROLE.equals(role.getName())) {
+                Shop shop = shopRepository.findById(request.getId()).orElseThrow(() ->
+                        new CustomException(new ErrorModel(400, Message.Shop.DOES_NOT_EXITED)));
+                shop.setIsActive(request.getIsActive());
+                shopRepository.save(shop);
+            }
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @Override
+    public void deleteUser(Integer id) {
         log.info("Deleting user ...");
         userRepository.deleteById(id);
     }
 
-    private User findById(String id) {
+    @Override
+    public List<CountUserByMonth> countUserRegistryByMonth() {
+        var year = LocalDate.now().getYear();
+        List<Date[]> monthDates = DateUtil.getMonthStartEndDates(year);
+        List<CountUserByMonth> countUserByMonthList = new ArrayList<>();
+        int previousCount = 0; // Biến lưu giá trị count của tháng trước
+
+        for (int month = 0; month < monthDates.size(); month++) {
+            Date[] dates = monthDates.get(month);
+            List<User> userList = userRepository.findUsersByCreatedAtBetween(dates[0], dates[1]);
+
+            int currentMonthCount = userList.size() + previousCount; // Cộng dồn số người dùng của tháng hiện tại với tháng trước
+            CountUserByMonth c = new CountUserByMonth();
+            c.setCount(currentMonthCount);
+            c.setMonth(month + 1);
+
+            countUserByMonthList.add(c);
+            previousCount = currentMonthCount; // Cập nhật previousCount cho tháng tiếp theo
+        }
+
+        return countUserByMonthList;
+    }
+
+
+    private User findById(Integer id) {
         return userRepository.findById(id).orElseThrow(() ->
                 new CustomException(new ErrorModel(400, Message.User.USER_DOES_NOT_EXITED)));
     }

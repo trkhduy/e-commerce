@@ -7,7 +7,6 @@ import com.dev.identity.dto.request.AuthenticationRequest;
 import com.dev.identity.dto.request.IntrospectRequest;
 import com.dev.identity.dto.request.LogoutRequest;
 import com.dev.identity.dto.request.RefreshRequest;
-import com.dev.identity.dto.response.IntrospectResponse;
 import com.dev.identity.service.AuthenticationService;
 import com.nimbusds.jose.JOSEException;
 import jakarta.validation.Valid;

@@ -8,5 +8,5 @@ import java.util.List;
 public interface PermissionService {
     PermissionResponse create(PermissionRequest request);
     List<PermissionResponse> getAll();
-    void delete(String id);
+    void delete(Integer id);
 }

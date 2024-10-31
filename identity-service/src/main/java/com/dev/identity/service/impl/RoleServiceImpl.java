@@ -54,7 +54,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public RoleResponse update(RoleRequest request, String id) {
+    public RoleResponse update(RoleRequest request, Integer id) {
 
         Role role = findById(id);
         if (roleRepository.existsByNameAndIdNot(request.getName(), id))
@@ -73,12 +73,12 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public void delete(String id) {
+    public void delete(Integer id) {
         log.info("Deleting role ...");
         roleRepository.delete(findById(id));
     }
 
-    private Role findById(String id) {
+    private Role findById(Integer id) {
         return roleRepository.findById(id).orElseThrow(() -> new CustomException(new ErrorModel(400, Message.Role.ROLE_DOES_NOT_EXITED)));
     }
 }
