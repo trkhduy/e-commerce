@@ -1,5 +1,7 @@
 package com.dev.identity.dto.response;
 
+import com.dev.identity.dto.request.ShopRequest;
+import com.dev.identity.entity.Shop;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,5 +22,6 @@ public class UserResponse {
     String phoneNumber;
     String email;
     Boolean isActive;
+    Shop shop;
     Set<RoleResponse> roles;
 }
