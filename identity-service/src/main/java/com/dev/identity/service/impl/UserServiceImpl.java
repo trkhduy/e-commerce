@@ -61,24 +61,24 @@ public class UserServiceImpl implements UserService {
             log.error(Message.User.USER_ALREADY_EXISTED);
             throw new CustomException(new ErrorModel(400, Message.User.USER_ALREADY_EXISTED));
         }
-        if (emailExist) {
-            log.error(Message.User.EMAIL_ALREADY_EXISTED);
-            throw new CustomException(new ErrorModel(400, Message.User.EMAIL_ALREADY_EXISTED));
-        }
+//        if (emailExist) {
+//            log.error(Message.User.EMAIL_ALREADY_EXISTED);
+//            throw new CustomException(new ErrorModel(400, Message.User.EMAIL_ALREADY_EXISTED));
+//        }
         if (request.getShop() != null) {
             try {
                 var shop = request.getShop();
                 var shopExist = shopRepository.existsShopByShopName(shop.getShopName());
                 var emailShopExist = shopRepository.existsShopByContactMail(shop.getContactMail());
 
-                if (shopExist) {
-                    log.error(Message.Shop.ALREADY_EXISTED);
-                    throw new CustomException(new ErrorModel(400, Message.Shop.ALREADY_EXISTED));
-                }
-                if (emailShopExist) {
-                    log.error(Message.Shop.EMAIL_ALREADY_EXISTED);
-                    throw new CustomException(new ErrorModel(400, Message.Shop.EMAIL_ALREADY_EXISTED));
-                }
+//                if (shopExist) {
+//                    log.error(Message.Shop.ALREADY_EXISTED);
+//                    throw new CustomException(new ErrorModel(400, Message.Shop.ALREADY_EXISTED));
+//                }
+//                if (emailShopExist) {
+//                    log.error(Message.Shop.EMAIL_ALREADY_EXISTED);
+//                    throw new CustomException(new ErrorModel(400, Message.Shop.EMAIL_ALREADY_EXISTED));
+//                }
 
                 User user = userMapper.toUser(request);
                 user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -98,6 +98,7 @@ public class UserServiceImpl implements UserService {
                 shopRepository.save(shopEntity);
                 log.info("Send verify email ...");
                 sendEmailUtil.sendVerifyEmail(user);
+                log.info("userId: {}", user.getId());
                 return userMapper.toUserResponse(user);
             } catch (Exception e) {
                 log.error("Error creating user!", e);

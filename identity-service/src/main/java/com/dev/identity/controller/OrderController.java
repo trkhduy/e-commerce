@@ -37,4 +37,12 @@ public class OrderController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(@RequestBody @Validated OrderRequest request, @PathVariable Integer id) {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setStatus(true);
+        dataResponse.setResult(new ResultModel<>(null, orderService.updateOrder(request, id)));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
 }

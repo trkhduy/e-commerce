@@ -50,26 +50,32 @@ public class SendEmailUtil {
     private Map<EmailPropertiesEnum, String> handleInformationEmail(User user, EmailTypeEnum emailTypeEnum) {
         String email = user.getEmail();
         TokenTypeEnum typeToken;
+        Map<EmailPropertiesEnum, String> keyEmailMap = new HashMap<>();
+
         switch (emailTypeEnum) {
             case VERIFY_EMAIL -> typeToken = TokenTypeEnum.VERIFY_TOKEN;
             case FORGOT_PASSWORD -> typeToken = TokenTypeEnum.FORGOT_PASSWORD_TOKEN;
             default -> typeToken = null;
         }
-        String linkVerifyToken = typeToken.equals(TokenTypeEnum.VERIFY_TOKEN)
-                ? pathVerifyEmail
-                : pathForgotPassword;
-        linkVerifyToken = linkVerifyToken.replace("{{userId}}", user.getId().toString());
-        linkVerifyToken = linkVerifyToken.replace("{{token}}", authenticationService.generateVerifyMailToken(user));
-        EmailTemplate emailTemplateEntity = emailTemplateService.getByType(emailTypeEnum.toString());
-        String subject = emailTemplateEntity.getSubject();
-        String contentEmail = emailTemplateEntity.getContent();
-        String fullName = user.getFirstName() + " " + user.getLastName();
-        contentEmail = contentEmail.replace("{{User}}", fullName);
-        contentEmail = contentEmail.replace("{{Link}}", linkVerifyToken);
-        Map<EmailPropertiesEnum, String> keyEmailMap = new HashMap<>();
-        keyEmailMap.put(EmailPropertiesEnum.EMAIL_TO, email);
-        keyEmailMap.put(EmailPropertiesEnum.EMAIL_CONTENT, contentEmail);
-        keyEmailMap.put(EmailPropertiesEnum.EMAIL_SUBJECT, subject);
+        try {
+            String linkVerifyToken = typeToken.equals(TokenTypeEnum.VERIFY_TOKEN)
+                    ? pathVerifyEmail
+                    : pathForgotPassword;
+            linkVerifyToken = linkVerifyToken.replace("{{userId}}", user.getId().toString());
+            linkVerifyToken = linkVerifyToken.replace("{{token}}", authenticationService.generateVerifyMailToken(user));
+            EmailTemplate emailTemplateEntity = emailTemplateService.getByType(emailTypeEnum.toString());
+            String subject = emailTemplateEntity.getSubject();
+            String contentEmail = emailTemplateEntity.getContent();
+            String fullName = user.getFirstName() + " " + user.getLastName();
+            contentEmail = contentEmail.replace("{{User}}", fullName);
+            contentEmail = contentEmail.replace("{{Link}}", linkVerifyToken);
+            keyEmailMap.put(EmailPropertiesEnum.EMAIL_TO, email);
+            keyEmailMap.put(EmailPropertiesEnum.EMAIL_CONTENT, contentEmail);
+            keyEmailMap.put(EmailPropertiesEnum.EMAIL_SUBJECT, subject);
+        } catch (Exception e) {
+            log.error("Handle Email Information failed...", e);
+        }
+
         return keyEmailMap;
     }
 }
