@@ -10,7 +10,6 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderItemRequest {
-    Integer id;
     Integer productId;
     Integer couponId;
     Integer shopId;

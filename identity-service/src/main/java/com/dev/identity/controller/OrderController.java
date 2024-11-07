@@ -45,4 +45,13 @@ public class OrderController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable Integer id) {
+        orderService.deleteOrder(id);
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setStatus(true);
+        dataResponse.setResult(new ResultModel<>(null, Message.Order.DELETE));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
 }

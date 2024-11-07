@@ -53,14 +53,4 @@ public class Message {
         public static final String DELETE = "Delete Order Successful";
 
     }
-
-    public static class OrderItem {
-        public static final String DOES_NOT_EXITED = "Order Item does not exist";
-        public static final String ALREADY_EXISTED = "Order Item already existed";
-        public static final String CREATE_FAILED = "Create Order Item failed";
-        public static final String CREATE_SUCCESS = "Create Order Item successfully";
-        public static final String UPDATE_FAILED = "Update Order Item failed";
-        public static final String DELETE = "Delete Order Item Successful";
-
-    }
 }
